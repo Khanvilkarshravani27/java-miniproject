@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MAPnGo Infinite Images</title>
+    <style>
+        :root {
+            --bg: #011434;
+            --overlay: rgba(7, 16, 32, 0.6);
+            --accent: #fefdfc;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            height: 100vh;
+            overflow: hidden;
+            font-family: Inter, system-ui, sans-serif;
+            color: white;
+        }
+
+        /* Marquee container */
+        .marquee-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100vh;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-track {
+            display: inline-flex;
+            animation: scroll-left linear infinite;
+            will-change: transform;
+        }
+
+        .marquee-track img {
+            height: 100vh;
+            width: 75vh;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 3px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Center circular image */
+        .center-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .center-title img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            animation: shiftScale 6s ease-in-out infinite;
+            display: block;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(85, 92, 143, 0.347);
+        }
+
+        @keyframes shiftScale {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Bottom Button */
+        .cta-wrap {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .btn {
+            padding: 24px 48px;
+            border-radius: 999px;
+            margin-bottom: 40px;
+            border:none;
+            font-weight: bold;
+            font-size:larger;
+            cursor: pointer;
+            background: linear-gradient(45deg, #2101725e, rgba(6, 93, 243, 0.721));
+            color: var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-20px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Image Marquee -->
+    <div class="marquee-wrap">
+        <div class="marquee-track" id="track">
+            <img src="https://www.fabhotels.com/blog/wp-content/uploads/2018/09/Gateway-of-India-1.jpg" alt="scenic 1">
+            <img src="https://th.bing.com/th/id/R.7669d8ca44a9b8bd315b9b78c170b792?rik=SeNU1jKfiU4tKA&riu=http%3a%2f%2fgetwallpapers.com%2fwallpaper%2ffull%2f8%2fe%2ff%2f85879.jpg&ehk=djPYelP%2fAnSMr7pnQVjuOb2I0B%2fs56W2JGFTQnNA7wM%3d&risl=&pid=ImgRaw&r=0" alt="scenic 2">
+            <img src="https://wallpaperaccess.com/full/1099210.jpg" alt="scenic 3">
+            <img src="https://wallpaperaccess.com/full/1322152.jpg" alt="scenic 4">
+            <img src="https://nivaanholidays.com/wp-content/uploads/2023/06/ii0ows5abco.jpg" alt="scenic 5">
+
+            <!-- Duplicate for seamless loop -->
+            <img src="https://www.fabhotels.com/blog/wp-content/uploads/2018/09/Gateway-of-India-1.jpg" alt="scenic 1">
+            <img src="https://th.bing.com/th/id/R.7669d8ca44a9b8bd315b9b78c170b792?rik=SeNU1jKfiU4tKA&riu=http%3a%2f%2fgetwallpapers.com%2fwallpaper%2ffull%2f8%2fe%2ff%2f85879.jpg&ehk=djPYelP%2fAnSMr7pnQVjuOb2I0B%2fs56W2JGFTQnNA7wM%3d&risl=&pid=ImgRaw&r=0" alt="scenic 2">
+            <img src="https://wallpaperaccess.com/full/1099210.jpg" alt="scenic 3">
+            <img src="https://wallpaperaccess.com/full/1322152.jpg" alt="scenic 4">
+            <img src="https://nivaanholidays.com/wp-content/uploads/2023/06/ii0ows5abco.jpg" alt="scenic 5">
+
+        </div>
+    </div>
+
+    <!-- Center Circular Image -->
+    <div class="center-title" id="logo">
+        <a href="login.html">
+            <img src="\frontend\home_logo.jpg" alt="Logo">
+        </a>
+    </div>
+
+    <!-- Next Page Button -->
+    <div class="cta-wrap">
+        <button class="btn" id="nextBtn">Explore →</button>
+    </div>
+
+    <script>
+        (function () {
+            const track = document.getElementById('track');
+
+            function setDuration() {
+                const totalWidth = Array.from(track.children)
+                    .slice(0, track.children.length / 2)
+                    .reduce((sum, el) =>
+                        sum + el.offsetWidth + parseFloat(getComputedStyle(el).marginRight || 0), 0);
+                const speed = 120; // px/sec
+                const duration = Math.max(8, totalWidth / speed);
+                track.style.animationDuration = duration + 's';
+            }
+
+            window.addEventListener('load', setDuration);
+            window.addEventListener('resize', () => setTimeout(setDuration, 150));
+
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                window.location.href = 'login.html';
+
+            });
+        })();
+    </script>
+</body>
+
+</html>
